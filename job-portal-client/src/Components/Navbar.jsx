@@ -1,17 +1,29 @@
 import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import AuthContext from "../Context/AuthContext";
+import Logo from "../assets/logo/job1 (1).jpg"
 
 const Navbar = () => {
-  const { user } = useContext(AuthContext);
+  const { user, logOutUser } = useContext(AuthContext);
+  
+  const handleUserLogOut = ()=>{
+        logOutUser()
+        .then(()=>{
+
+        })
+        .catch((error)=>{
+          console.log(error);
+        })
+
+
+  }
+
+
+  
   const links = (
     <>
-      <li>
-        <a>Submenu 1</a>
-      </li>
-      <li>
-        <a>Submenu 2</a>
-      </li>
+      <Link to='/'>Home</Link>
+      <Link to='/'>Jobs</Link>
     </>
   );
 
@@ -43,7 +55,12 @@ const Navbar = () => {
             {links}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <a className="btn btn-ghost text-xl">
+          <div className="flex items-center gap-2 font-semibold">
+          <img src={Logo} className="w-12" alt="" />
+          <p>Job Portal</p>
+          </div>
+        </a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{links}</ul>
@@ -51,7 +68,7 @@ const Navbar = () => {
       <div className="navbar-end">
         {user && user?.email ? (
           <NavLink>
-            <button>logout</button>
+            <button onClick={handleUserLogOut}>logout</button>
           </NavLink>
         ) : (
           <NavLink to="/login">
