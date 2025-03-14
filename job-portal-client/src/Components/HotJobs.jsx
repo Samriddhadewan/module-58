@@ -16,11 +16,11 @@ const HotJobs = () => {
  
     return (
     <div>
-        <h1>Hot Jobs {jobs.length}</h1>
+        <h1 className="text-3xl font-semibold text-center text-gray-700 my-4">Hot Jobs {jobs.length}</h1>
     
-    <div>
+    <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {
-            jobs.map(item => <JobCard key={item._id}></JobCard>)
+            jobs.map(item => <JobCard key={item._id} item={item}></JobCard>)
         }
     </div>
     
