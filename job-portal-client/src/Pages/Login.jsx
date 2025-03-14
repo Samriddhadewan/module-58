@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 import loginAnimation from "../assets/login.json"
 import Lottie from 'lottie-react'
 import AuthContext from '../Context/AuthContext'
+import GoogleLogin from "../Components/GoogleLogin"
+
+
 const Login = () => {
     const {loginUser} = useContext(AuthContext);
     const handleLogin = e=>{
@@ -37,8 +40,9 @@ const Login = () => {
           <label className="fieldset-label">Password</label>
           <input name='password' type="password" className="input" placeholder="Password" />
           <div><a className="link link-hover">Forgot password?</a></div>
-          <button className="btn btn-neutral mt-4">Login</button>
+          <button className="btn btn-neutral mt-2">Login</button>
         </form>
+        <GoogleLogin></GoogleLogin>
         <p>Don't have an Account? <Link className='underline text-blue-500' to='/register'>Register Now</Link></p>
       </div>
     </div>

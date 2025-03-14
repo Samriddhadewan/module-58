@@ -2,6 +2,7 @@ import Lottie from "lottie-react";
 import React, { useContext } from "react";
 import lottieAnimation from "../assets/Animation - 1741718741656.json";
 import AuthContext from "../Context/AuthContext";
+import GoogleLogin from "../Components/GoogleLogin";
 
 const Register = () => {
   const { createUser } = useContext(AuthContext);
@@ -49,6 +50,7 @@ const Register = () => {
               />
               <button className="btn btn-neutral mt-4">Register Now</button>
             </form>
+            <GoogleLogin></GoogleLogin>
           </div>
         </div>
       </div>
