@@ -1,5 +1,6 @@
 import React from "react";
 import { CiLocationOn } from "react-icons/ci";
+import { Link } from "react-router-dom";
 
 const JobCard = ({ item }) => {
   const {
@@ -9,11 +10,10 @@ const JobCard = ({ item }) => {
     company_logo,
     location,
     company,
-    category,
+    _id,
     title,
   } = item;
 
-  console.log(item);
 
   return (
     <div className="card bg-base-100 px-3  p-4 shadow-sm space-y-5">
@@ -35,8 +35,8 @@ const JobCard = ({ item }) => {
         <p className="text-gray-600">{description}</p>
         <div className="">
           <div className="flex flex-wrap gap-2">
-            {requirements.map((item) => (
-              <p className="text-gray-500 border cursor-pointer rounded p-1">
+            {requirements.map((item,index) => (
+              <p key={index} className="text-gray-500 border cursor-pointer rounded p-1">
                 {item}
               </p>
             ))}
@@ -45,7 +45,9 @@ const JobCard = ({ item }) => {
             <p className="text-base text-gray-500">
               Salary : {salaryRange.min} - {salaryRange.max}$
             </p>
+            <Link to={`/job/${_id}`}>
             <button className="btn bg-accent text-white">Apply</button>
+            </Link>
           </div>
         </div>
       </div>

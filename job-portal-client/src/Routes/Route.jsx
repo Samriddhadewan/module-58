@@ -3,6 +3,8 @@ import Home from "../Pages/Home";
 import Register from "../Pages/Register";
 import Login from "../Pages/Login";
 import MainLayout from "../Layout/MainLayout";
+import JobDetails from "../Components/JobDetails";
+import { param } from "motion/react-client";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,11 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login></Login>,
+      },
+      {
+        path: "/job/:id",
+        element: <JobDetails></JobDetails>,
+        loader: ({params}) => fetch(`http://localhost:5000/jobs/${params.id}`)
       },
     ],
   },
