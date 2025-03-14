@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import loginAnimation from "../assets/login.json"
 import Lottie from 'lottie-react'
 import AuthContext from '../Context/AuthContext'
@@ -8,6 +8,10 @@ import GoogleLogin from "../Components/GoogleLogin"
 
 const Login = () => {
     const {loginUser} = useContext(AuthContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state || "/";
+    console.log(location)
     const handleLogin = e=>{
         e.preventDefault();
         const form = e.target;
@@ -17,6 +21,7 @@ const Login = () => {
         loginUser(email, password)
         .then((result)=>{
             const user = result.user;
+            navigate(from)
         })
         .then((error)=>{
             const errorCode = error.code;

@@ -4,7 +4,7 @@ import Register from "../Pages/Register";
 import Login from "../Pages/Login";
 import MainLayout from "../Layout/MainLayout";
 import JobDetails from "../Components/JobDetails";
-import { param } from "motion/react-client";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +25,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/job/:id",
-        element: <JobDetails></JobDetails>,
+        element: <PrivateRoute><JobDetails></JobDetails></PrivateRoute>,
         loader: ({params}) => fetch(`http://localhost:5000/jobs/${params.id}`)
       },
     ],
