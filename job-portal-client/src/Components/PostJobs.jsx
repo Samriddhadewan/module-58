@@ -1,9 +1,11 @@
 import { form } from "motion/react-client";
 import React from "react";
 import { Form } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const PostJobs = () => {
-
+    const {user} = useAuth();
     const handleSubmitJob = (e)=>{
         e.preventDefault();
 
@@ -13,7 +15,27 @@ const PostJobs = () => {
         const {min, max, currency, ...newJob} = data;
 
         newJob.salaryRange = {min, max, currency};
+        newJob.requirements = newJob.requirements.split("\n")
+        newJob.responsibilities = newJob.responsibilities.split("\n")
         console.log(newJob);
+
+        fetch("http://localhost:5000/jobs", {
+            method: "POST",
+            headers:{
+                "Content-type": "Application/json" 
+            },
+            body: JSON.stringify(newJob)
+        })
+        .then(res =>res.json())
+        .then(data => {
+            if(data.insertedId){
+                Swal.fire({
+                    title: "Drag me!",
+                    icon: "success",
+                    draggable: true
+                  });
+            }
+        })
 
     }
 
@@ -106,6 +128,14 @@ const PostJobs = () => {
             className="textarea w-full"
             placeholder="job description"
           ></textarea>
+          {/* Company name  */}
+          <label className="fieldset-label">Company Name</label>
+          <input
+            type="text"
+            className="input w-full"
+            placeholder="Enter Job Title"
+            name="company"
+          />
           {/* job requirements  */}
           <label className="fieldset-label">Job Requirements</label>
           <textarea
@@ -124,7 +154,8 @@ const PostJobs = () => {
           {/* hr email  */}
           <label className="fieldset-label">HR Email</label>
           <input
-            name="hr_email"
+          defaultValue={user.email}
+          name="hr_email"
             type="email"
             className="input w-full"
             placeholder="Enter HR email"
@@ -132,13 +163,22 @@ const PostJobs = () => {
           {/* hr name  */}
           <label className="fieldset-label">HR Name</label>
           <input
+          
             name="hr_name"
             type="text"
             className="input w-full"
             placeholder="Enter HR name"
           />
+          {/* job deadline  */}
+          <label className="fieldset-label">Job Deadline</label>
+          <input
+            type="date"
+            className="input w-full"
+            placeholder="Enter Job Title"
+            name="deadline"
+          />
 
-          {/* hr name  */}
+          {/* logo url  */}
           <label className="fieldset-label">Company Logo URL</label>
           <input
             name="company_logo"

@@ -10,7 +10,6 @@ const Navbar = () => {
     logOutUser()
       .then(() => {})
       .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -29,6 +28,13 @@ const Navbar = () => {
       {user && user?.email ? (
         <Link className="mr-2" to="/postNewJob">
           Post New Jobs
+        </Link>
+      ) : (
+        ""
+      )}
+      {user && user?.email ? (
+        <Link className="mr-2" to="/myPostedJobs">
+          My Posted Jobs
         </Link>
       ) : (
         ""

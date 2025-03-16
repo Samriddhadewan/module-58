@@ -10,7 +10,6 @@ const MyApplications = () => {
     .then(res=> res.json())
     .then(data=> setApplications(data));
   } ,[user.email])
-  console.log(applications);
   return <div>
     <h1>My applications {applications.length}
         <div>

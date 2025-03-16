@@ -11,7 +11,6 @@ const HotJobs = () => {
         .then(data => setJobs(data))
     },[])
 
-    console.log(jobs)
     
  
     return (
