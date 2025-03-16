@@ -1,29 +1,38 @@
 import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import AuthContext from "../Context/AuthContext";
-import Logo from "../assets/logo/job1 (1).jpg"
+import Logo from "../assets/logo/job1 (1).jpg";
 
 const Navbar = () => {
   const { user, logOutUser } = useContext(AuthContext);
-  
-  const handleUserLogOut = ()=>{
-        logOutUser()
-        .then(()=>{
 
-        })
-        .catch((error)=>{
-          console.log(error);
-        })
+  const handleUserLogOut = () => {
+    logOutUser()
+      .then(() => {})
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-
-  }
-
-
-  
   const links = (
     <>
-      <Link to='/'>Home</Link>
-      <Link to='/'>Jobs</Link>
+      <Link className="mr-2" to="/">
+        Home
+      </Link>
+      {user && user?.email ? (
+        <Link className="mr-2" to="/myApplications">
+          my applications
+        </Link>
+      ) : (
+        ""
+      )}
+      {user && user?.email ? (
+        <Link className="mr-2" to="/postNewJob">
+          Post New Jobs
+        </Link>
+      ) : (
+        ""
+      )}
     </>
   );
 
@@ -57,8 +66,8 @@ const Navbar = () => {
         </div>
         <a className="btn btn-ghost text-xl">
           <div className="flex items-center gap-2 font-semibold">
-          <img src={Logo} className="w-12" alt="" />
-          <p>Job Portal</p>
+            <img src={Logo} className="w-12" alt="" />
+            <p>Job Portal</p>
           </div>
         </a>
       </div>
