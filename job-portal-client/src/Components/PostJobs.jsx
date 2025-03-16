@@ -1,12 +1,28 @@
+import { form } from "motion/react-client";
 import React from "react";
 import { Form } from "react-router-dom";
 
 const PostJobs = () => {
+
+    const handleSubmitJob = (e)=>{
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
+
+        const {min, max, currency, ...newJob} = data;
+
+        newJob.salaryRange = {min, max, currency};
+        console.log(newJob);
+
+    }
+
+
   return (
     <div>
       <h1 className="text-3xl text-center font-semibold">Post A New job</h1>
       <div className="">
-        <form className=" mx-auto max-w-5xl fieldset px-4">
+        <form onSubmit={handleSubmitJob} className=" mx-auto max-w-5xl fieldset px-4">
           {/* job title  */}
           <label className="fieldset-label">Job Title</label>
           <input
@@ -27,7 +43,7 @@ const PostJobs = () => {
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Select Job Type</legend>
             <select
-              name="job-type"
+              name="jobType"
               defaultValue="Pick a browser"
               className="select"
               required
@@ -42,7 +58,7 @@ const PostJobs = () => {
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Pick up Job field</legend>
             <select
-              name="job-field"
+              name="category"
               defaultValue="Pick a browser"
               className="select"
               required
@@ -71,8 +87,8 @@ const PostJobs = () => {
             />
 
             <fieldset className="">
-              <select defaultValue="Pick a browser" className="select" required>
-                <option name="currency" disabled={true}>
+              <select name="currency" defaultValue="Pick a browser" className="select" required>
+                <option  disabled={true}>
                   Pick a Job type
                 </option>
                 <option>BDT</option>
@@ -125,7 +141,7 @@ const PostJobs = () => {
           {/* hr name  */}
           <label className="fieldset-label">Company Logo URL</label>
           <input
-            name="logo"
+            name="company_logo"
             type="text"
             className="input w-full"
             placeholder="Company Logo URL"
