@@ -4,6 +4,7 @@ const app = express();
 require("dotenv").config();
 const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+const jwt = require('jsonwebtoken')
 
 // middlewares
 app.use(cors());
@@ -52,8 +53,6 @@ async function run() {
       const application = req.body;
       const result = await jobApplyCollection.insertOne(application);
 
-
-      
       const id = application.job_Id;
       const query = { _id: new ObjectId(id) };
       const job = await jobCollection.findOne(query);
@@ -67,14 +66,11 @@ async function run() {
       const filter = { _id: new ObjectId(id) };
       const updateDoc = {
         $set: {
-          applicationCount: count
+          applicationCount: count,
         },
       };
 
-      const updateResult = await jobCollection.updateOne(
-        filter,
-        updateDoc
-      );
+      const updateResult = await jobCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
 
@@ -111,6 +107,19 @@ async function run() {
       const cursor = jobCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
+    });
+
+    app.get("/jobApplication/job/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { job_Id: id };
+      const result = await jobApplyCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    app.post("/jwt", async (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, "secret", { expiresIn: "1h" });
+      res.send(token);
     });
   } finally {
     // Ensures that the client will close when you finish/error
