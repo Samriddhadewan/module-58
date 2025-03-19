@@ -8,12 +8,29 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 
 // middlewares
-app.use(cors({
-  origin: ['http://localhost:5173'],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: ["http://localhost:5173"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
+
+const verifyToken = (req, res, next) => {
+  const token = req?.cookies?.token;
+
+  if (!token) {
+    return res.status(401).send({ message: "UnAuthorized Access" });
+  }
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).send({ message: "UnAuthorized Access" });
+    }
+    req.user = decoded;
+    next();
+  });
+};
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.mx4ls.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -79,13 +96,13 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/jobApplications", async (req, res) => {
+    app.get("/jobApplications", verifyToken, async (req, res) => {
       const email = req.query.email;
       const query = { user_email: email };
+      if(req.user.email !== email){
+        return res.status(403).send("unauthorized access");
+      }
 
-
-      console.log('co co cookies', req.cookies)
-      
       const result = await jobApplyCollection.find(query).toArray();
 
       for (const application of result) {
@@ -131,10 +148,12 @@ async function run() {
         expiresIn: "5h",
       });
 
-      res.cookie("token",token, {
-        httpOnly:true,
-        secure:false
-      }).send({ success: true });
+      res
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: false,
+        })
+        .send({ success: true });
     });
   } finally {
     // Ensures that the client will close when you finish/error
