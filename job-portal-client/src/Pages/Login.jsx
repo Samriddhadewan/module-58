@@ -4,6 +4,7 @@ import loginAnimation from "../assets/login.json";
 import Lottie from "lottie-react";
 import AuthContext from "../Context/AuthContext";
 import GoogleLogin from "../Components/GoogleLogin";
+import axios from "axios";
 
 const Login = () => {
   const { loginUser } = useContext(AuthContext);
@@ -18,7 +19,15 @@ const Login = () => {
 
     loginUser(email, password)
       .then((result) => {
-        const user = result.user;
+        const user = {
+          email: email,
+        };
+        axios.post("http://localhost:5000/jwt", user, {withCredentials:true})
+        .then((res)=> {
+          console.log(res.data)
+        })
+        
+
         navigate(from);
       })
       .then((error) => {
